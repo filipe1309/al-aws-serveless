@@ -7,3 +7,5 @@ aws rekognition list-collections
 aws rekognition list-faces --collection-id faces
 
 aws s3 cp _analise.png s3://fa-imagens-dotr
+
+python faceanalise.py
