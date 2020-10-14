@@ -52,6 +52,18 @@ def gera_dados_json(resultado_comparacao):
     return dados_json
 
 
+def publica_dados(dados_json):
+    arquivo = s3.Object('fa-site-dotr', 'dados.json')
+    arquivo.put(Body=json.dumps(dados_json))
+
+
+def exclui_imagem_da_colecao(faceId_detectadas):
+    client.delete_faces(
+        CollectionId='faces',
+        FaceIds=faceId_detectadas,
+    )
+
+
 faces_detectadas = detecta_faces()
 # print(json.dumps(faces_detectadas, indent=4))
 faceId_detectadas = cria_lista_faceId_detectadas(faces_detectadas)
@@ -59,4 +71,6 @@ faceId_detectadas = cria_lista_faceId_detectadas(faces_detectadas)
 resultado_comparacao = compara_imagens(faceId_detectadas)
 # print(json.dumps(resultado_comparacao, indent=4))
 dados_json = gera_dados_json(resultado_comparacao)
-print(json.dumps(dados_json, indent=4))
+# print(json.dumps(dados_json, indent=4))
+publica_dados(dados_json)
+exclui_imagem_da_colecao(faceId_detectadas)
